@@ -12,10 +12,13 @@ class MainController
 
     public static function index()
     {
-        $tweets = Post::allTweet();
+        if (Request::isPostMethod()) {
+            return;
+        } else {
+            $tweets = Post::allTweet();
+        }
 
         View::render('main.index', [
-        
             'user' => Auth::getUser(),
             'tweets' => $tweets,
         ]);
@@ -27,12 +30,12 @@ class MainController
             return;
         }
         $tweet = Request::post('text');
-       
+
         $post = new Post;
         $post->tweet = $tweet;
 
         $post->save();
-        
+
         header("Location: /main");
     }
 }
